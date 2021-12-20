@@ -1,0 +1,10 @@
+*.sqlite3
+venv
+virtualenv
+*.pyc
+.idea
+.vscode
+*.log
+uploads
+.DS_Store
+settings_local.py
