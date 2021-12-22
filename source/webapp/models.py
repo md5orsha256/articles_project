@@ -1,8 +1,8 @@
 from django.db import models
 
-
 # Create your models here.
-STATUS_CHOICES = [('new', 'Новая'), ('moderated', 'Модерирована'),  ('rejected', 'Откланена')]
+STATUS_CHOICES = [('new', 'Новая'), ('moderated', 'Модерирована'), ('rejected', 'Откланена')]
+
 
 class Article(models.Model):
     title = models.CharField(max_length=200, null=False, blank=False, verbose_name="Заголовок")
