@@ -15,7 +15,11 @@ def create_article_view(request):
         title = request.POST.get('title')
         content = request.POST.get('content')
         author = request.POST.get('author')
-        new_article = Article.objects.create(title=title, content=content, author=author)
+        status = request.POST.get('status')
+        new_article = Article.objects.create(title=title,
+                                             content=content,
+                                             author=author,
+                                             status=status)
         context = {"article": new_article}
 
         return render(request, 'article_view.html', context)
