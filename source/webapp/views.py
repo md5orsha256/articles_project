@@ -4,7 +4,10 @@ from webapp.models import Article, STATUS_CHOICES
 
 
 def index_view(request):
-    articles = Article.objects.order_by("updated_at")
+    if request.GET.get("is_admin", "0") == "1":
+        articles = Article.objects.order_by("updated_at")
+    else:
+        articles = Article.objects.filter(status='moderated').order_by("updated_at")
     return render(request, 'index.html', {'articles': articles})
 
 
