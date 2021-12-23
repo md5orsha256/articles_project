@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <a href="/articles/add/">Создать новую статью</a>
+    <a href="{% url "article_add" %}">Создать новую статью</a>
     <h1>Статьи</h1>
     {% for article in articles %}
         <h3>{{ article.title }}</h3>
-        <p><a href="/article/{{ article.pk }}">Подробнее...</a></p>
+        <p><a href="{% url "article_view" article.pk %}">Подробнее...</a></p>
     {% endfor %}
 </body>
 </html>
