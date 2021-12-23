@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 from webapp.models import Article
 
@@ -16,9 +17,9 @@ def create_article_view(request):
         content = request.POST.get('content')
         author = request.POST.get('author')
         new_article = Article.objects.create(title=title, content=content, author=author)
-        context = {"article": new_article}
-
-        return render(request, 'article_view.html', context)
+        # context = {"article": new_article}
+        return HttpResponseRedirect(f"/article/?pk={new_article.pk}")
+        # return render(request, 'article_view.html', context)
 
 
 def article_view(request):
