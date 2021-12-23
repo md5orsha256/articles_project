@@ -14,7 +14,7 @@
     <h1>Статьи</h1>
     {% for article in articles %}
         <h3>{{ article.title }}</h3>
-        <p><a href="/article?pk={{ article.pk }}">Подробнее...</a></p>
+        <p><a href="/article/{{ article.pk }}">Подробнее...</a></p>
     {% endfor %}
 </body>
 </html>
