@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}Create article{% endblock %}
-
+{% block nav %}{% endblock %}
 {% block content %}
     <h1>Create Article</h1>
 
@@ -19,7 +19,6 @@
         <br/>
         <input type="submit" value="Send"/>
     </form>
-    <p><a href="{% url 'index' %}">На главную...</a></p>
 
 {% endblock %}
 

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <a href="{% url "article_add" %}">Создать новую статью</a>
     <h1>Статьи</h1>
     {% for article in articles %}
         <h3>{{ article.title }}</h3>

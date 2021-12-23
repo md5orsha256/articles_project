@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
 
 {% block title %}Article {{ article.pk }}{% endblock %}
+{% block nav %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'article_add' %}">Создание статьи</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Редактировать</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Удалить</a>
+    </li>
+{% endblock %}
 {% block content %}
     <h1>{{ article.author }}</h1>
     <h3>{{ article.title }}</h3>
     <p>{{ article.content }}</p>
-
-    <p><a href="{% url "index" %}">На главную...</a></p>
 {% endblock %}
