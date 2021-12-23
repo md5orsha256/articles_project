@@ -1,32 +1,26 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<h1>Create Article</h1>
+{% extends 'base.html' %}
 
-<form method="post">
-    {% csrf_token %}
+{% block title %}Create article{% endblock %}
 
-    <label>Title:</label><br/>
-    <input type="text" name="title"/><br/>
+{% block content %}
+    <h1>Create Article</h1>
 
-    <label>Text:</label><br/>
-    <textarea name="content"></textarea><br/>
+    <form method="post">
+        {% csrf_token %}
 
-    <label>Author:</label><br/>
-    <input type="text" name="author"/><br/>
-    <br/>
-    <input type="submit" value="Send"/>
-</form>
-<p><a href="{% url 'index' %}">На главную...</a></p>
-</body>
-</html>
+        <label>Title:</label><br/>
+        <input type="text" name="title"/><br/>
 
+        <label>Text:</label><br/>
+        <textarea name="content"></textarea><br/>
+
+        <label>Author:</label><br/>
+        <input type="text" name="author"/><br/>
+        <br/>
+        <input type="submit" value="Send"/>
+    </form>
+    <p><a href="{% url 'index' %}">На главную...</a></p>
+
+{% endblock %}
 
 
