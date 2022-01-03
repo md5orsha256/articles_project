@@ -31,3 +31,15 @@ def article_view(request, pk):
     article = get_object_or_404(Article, pk=pk)
     context = {"article": article}
     return render(request, 'article_view.html', context)
+
+
+def article_update_view(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    if request.method == 'GET':
+        return render(request, 'article_update.html', {"article": article})
+    else:
+        article.title = request.POST.get('title')
+        article.content = request.POST.get('content')
+        article.author = request.POST.get('author')
+        article.save()
+        return redirect("article_view", pk=article.pk)

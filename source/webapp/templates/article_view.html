@@ -6,7 +6,7 @@
         <a class="nav-link" href="{% url 'article_add' %}">Создание статьи</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Редактировать</a>
+        <a class="nav-link" href="{% url "article_update_view" article.pk %}">Редактировать</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Удалить</a>
