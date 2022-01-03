@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404
-from django.urls import reverse
 
 from webapp.forms import ArticleForm
 from webapp.models import Article
-from webapp.utils import article_validate
 
 
 def index_view(request):
@@ -27,7 +24,6 @@ def create_article_view(request):
         return render(request, 'article_create.html', {"form": form})
 
 
-
 def article_view(request, pk):
     article = get_object_or_404(Article, pk=pk)
     context = {"article": article}
@@ -37,16 +33,21 @@ def article_view(request, pk):
 def article_update_view(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if request.method == 'GET':
-        return render(request, 'article_update.html', {"article": article})
+        form = ArticleForm(initial={
+            'title': article.title,
+            'content': article.content,
+            'author': article.author
+        })
+        return render(request, 'article_update.html', {"article": article, "form": form})
     else:
-        article.title = request.POST.get('title')
-        article.content = request.POST.get('content')
-        article.author = request.POST.get('author')
-        errors = article_validate(article.title, article.content, article.author)
-        if errors:
-            return render(request, 'article_update.html', {"errors": errors, "article": article})
-        article.save()
-        return redirect("article_view", pk=article.pk)
+        form = ArticleForm(data=request.POST)
+        if form.is_valid():
+            article.title = request.POST.get('title')
+            article.content = request.POST.get('content')
+            article.author = request.POST.get('author')
+            article.save()
+            return redirect("article_view", pk=article.pk)
+        return render(request, 'article_update.html', {"article": article, "form": form})
 
 
 def article_delete_view(request, pk):
