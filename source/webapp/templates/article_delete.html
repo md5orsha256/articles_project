@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{% url "article_delete_view" article.pk %}" method="POST">
+    {% csrf_token %}
+        <h2>Вы действительно хотите удалить статью {{ article.title }}</h2>
+        <input type="submit" value="Да">
+    </form>
+    <a href="{% url "article_view" article.pk %}">Нет</a>
+{% endblock %}

@@ -9,7 +9,7 @@
         <a class="nav-link" href="{% url "article_update_view" article.pk %}">Редактировать</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Удалить</a>
+        <a class="nav-link" href="{% url "article_delete_view" article.pk %}">Удалить</a>
     </li>
 {% endblock %}
 {% block content %}
