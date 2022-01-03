@@ -9,18 +9,7 @@
     <h1>Update Article</h1>
 
     <form method="post">
-        {% csrf_token %}
-
-        <label>Title:</label><br/>
-        <input type="text" name="title" value="{{ article.title }}" /><br/>
-
-        <label>Text:</label><br/>
-        <textarea name="content" placeholder="Введите описание поста">{{ article.content }}</textarea><br/>
-
-        <label>Author:</label><br/>
-        <input type="text" name="author" value="{{ article.author }}"/><br/>
-        <br/>
-        <input type="submit" value="Update"/>
+        {% include "partial/form.html" with button_text="Изменить"  %}
     </form>
 
 {% endblock %}
