@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Статьи</h1>
+    {% if articles %}
+        <h1>Статьи</h1>
+    {% else %}
+        <h1>Нет статей</h1>
+    {% endif %}
+
     {% for article in articles %}
         <h3>{{ article.title }}</h3>
         <p><a href="{% url "article_view" article.pk %}">Подробнее...</a></p>
