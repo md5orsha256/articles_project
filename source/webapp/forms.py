@@ -1,8 +1,13 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms import widgets
 
 from webapp.models import STATUS_CHOICES
+from datetime import date
 
+# def publish_date_validate(value):
+#     if value < date.today():
+#         raise ValidationError("дата публикации не может быть раньше чем сегодня")
 
 class ArticleForm(forms.Form):
     title = forms.CharField(max_length=200,
@@ -19,3 +24,11 @@ class ArticleForm(forms.Form):
                                    widget=widgets.DateTimeInput(attrs={"type": "date"}),
                                    required=True
                                    )
+    def clean_publish_date(self):
+        if self.cleaned_data.get("publish_date") < date.today():
+            raise ValidationError("дата публикации не может быть раньше чем сегодня")
+        return self.cleaned_data.get("publish_date")
+
+    def clean(self):
+        return self.cleaned_data
+
