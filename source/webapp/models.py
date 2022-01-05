@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from django.utils import timezone
+
 STATUS_CHOICES = [('new', 'Новая'), ('moderated', 'Модерирована'), ('rejected', 'Откланена')]
 
 
@@ -11,6 +13,7 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
     status = models.CharField(max_length=15, default='new', choices=STATUS_CHOICES, verbose_name="Статус")
+    publish_date = models.DateField(verbose_name="Дата публикации", default=timezone.now)
 
     def __str__(self):
         return f"{self.pk}. {self.author}: {self.title}"

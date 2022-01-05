@@ -20,7 +20,12 @@ def create_article_view(request):
             content = form.cleaned_data.get('content')
             author = form.cleaned_data.get('author')
             status = form.cleaned_data.get('status')
-            new_article = Article.objects.create(title=title, content=content, author=author, status=status)
+            publish_date = form.cleaned_data.get('publish_date')
+            new_article = Article.objects.create(title=title,
+                                                 content=content,
+                                                 author=author,
+                                                 status=status,
+                                                 publish_date=publish_date)
             return redirect("article_view", pk=new_article.pk)
         return render(request, 'article_create.html', {"form": form})
 
@@ -38,7 +43,8 @@ def article_update_view(request, pk):
             'title': article.title,
             'content': article.content,
             'author': article.author,
-            "status": article.status
+            "status": article.status,
+            "publish_date": article.publish_date.strftime('%Y-%m-%d')
         })
         return render(request, 'article_update.html', {"article": article, "form": form})
     else:
@@ -48,6 +54,7 @@ def article_update_view(request, pk):
             article.content = form.cleaned_data.get('content')
             article.author = form.cleaned_data.get('author')
             article.status = form.cleaned_data.get('status')
+            article.publish_date = form.cleaned_data.get('publish_date')
             article.save()
             return redirect("article_view", pk=article.pk)
         return render(request, 'article_update.html', {"article": article, "form": form})
