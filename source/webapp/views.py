@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
-from webapp.forms import ArticleForm
+from webapp.forms import ArticleForm, ArticleDeleteForm
 from webapp.models import Article
 
 
@@ -64,7 +64,14 @@ def article_update_view(request, pk):
 def article_delete_view(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if request.method == 'GET':
-        return render(request, "article_delete.html", {"article": article})
+        form = ArticleDeleteForm()
+        return render(request, "article_delete.html", {"article": article, "form": form})
     else:
-        article.delete()
-        return redirect("index")
+        form = ArticleDeleteForm(data=request.POST)
+        if form.is_valid():
+            if form.cleaned_data.get("title") != article.title:
+                form.errors['title'] = ["Название статьи не соответствует"]
+                return render(request, "article_delete.html", {"article": article, "form": form})
+            article.delete()
+            return redirect("index")
+        return render(request, "article_delete.html", {"article": article, "form": form})

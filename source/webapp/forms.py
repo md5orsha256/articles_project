@@ -34,18 +34,25 @@ from datetime import date
 #         return self.cleaned_data
 
 class ArticleForm(forms.ModelForm):
-
     class Meta:
-        model=Article
-        fields="__all__"
-        error_messages={
-            "title":{
+        model = Article
+        fields = "__all__"
+        error_messages = {
+            "title": {
                 "required": "Поле обязательно для заполнения"
             }
         }
-        help_texts={
-            "title":"Введите заголовок"
+        help_texts = {
+            "title": "Введите заголовок"
         }
-        widgets={
+        widgets = {
             "publish_date": widgets.DateTimeInput(attrs={"type": "date"})
         }
+
+
+class ArticleDeleteForm(forms.Form):
+    title = forms.CharField(max_length=200,
+                            required=True,
+                            label="Название",
+                            error_messages={"required": "Поле обязательно для заполнения"},
+                            )
