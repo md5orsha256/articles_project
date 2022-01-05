@@ -13,7 +13,8 @@
     </li>
 {% endblock %}
 {% block content %}
-    <h1>{{ article.author }}</h1>
-    <h3>{{ article.title }}</h3>
+    <h1 style="display: inline-block">{{ article.title }}</h1>
+    <p style="display: inline-block">{{ article.get_status_display }}</p>
+    <h3>{{ article.author }} |  {{ article.created_at|date:"Y-m-d H:i" }}</h3>
     <p>{{ article.content }}</p>
 {% endblock %}
