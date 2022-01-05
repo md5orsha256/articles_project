@@ -16,6 +16,7 @@ def create_article_view(request):
     else:
         form = ArticleForm(data=request.POST)
         if form.is_valid():
+            # new_article = form.save() с модельной формой создать статью можно так
             title = form.cleaned_data.get('title')
             content = form.cleaned_data.get('content')
             author = form.cleaned_data.get('author')
