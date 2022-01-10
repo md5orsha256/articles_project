@@ -16,4 +16,10 @@
     <h1>{{ article.author }}</h1>
     <h3>{{ article.title }}</h3>
     <p>{{ article.content }}</p>
+    <br>
+    <h3>Комментарии</h3>
+    {% for comment in article.comments.all %}
+        <p>{{ comment.author }}</p>
+        <p>{{ comment.content }}</p>
+    {% endfor %}
 {% endblock %}
