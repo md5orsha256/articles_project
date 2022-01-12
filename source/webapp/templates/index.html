@@ -5,10 +5,22 @@
         <a href="{% url 'index_status' status.0 %}">{{ status.1 }}</a>
     {% endfor %}
 
-    {% if articles %}
-        <h1>Статьи</h1>
-    {% else %}
-        <h1>Нет статей</h1>
-    {% endif %}
-    {% include "partial/article_list.html" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-8">
+                {% if articles %}
+                    <h1>Статьи</h1>
+                {% else %}
+                    <h1>Нет статей</h1>
+                {% endif %}
+                {% include "partial/article_list.html" %}
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <form action="{% url "article_add" %}" method="post">
+                    {% include "partial/form.html" with button_text="Создать" %}
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

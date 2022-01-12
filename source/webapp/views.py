@@ -6,7 +6,7 @@ from webapp.models import Article, STATUS_CHOICES
 
 def index_view(request):
     form = ArticleForm()
-    articles = Article.objects.filter().order_by("-created_at")
+    articles = Article.objects.order_by("-created_at")
     return render(request, 'index.html', {'articles': articles, "statuses": STATUS_CHOICES, "form": form})
 
 
@@ -21,6 +21,7 @@ def create_article_view(request):
         form = ArticleForm()
         return render(request, 'article_create.html', {"form": form})
     else:
+        print(request.META)
         form = ArticleForm(data=request.POST)
         if form.is_valid():
             # new_article = form.save() с модельной формой создать статью можно так
@@ -35,7 +36,10 @@ def create_article_view(request):
                                                  status=status,
                                                  publish_date=publish_date)
             return redirect("article_view", pk=new_article.pk)
-        return render(request, 'article_create.html', {"form": form})
+        if "add" in request.META.get("HTTP_REFERER"):
+            return render(request, 'article_create.html', {"form": form})
+        articles = Article.objects.order_by("-created_at")
+        return render(request, 'index.html', {"form": form, 'articles': articles})
 
 
 def article_view(request, pk):
