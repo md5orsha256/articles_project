@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% for status in statuses %}
+        <a href="{% url 'index_status' status.0 %}">{{ status.1 }}</a>
+    {% endfor %}
+
     {% if articles %}
         <h1>Статьи</h1>
     {% else %}
         <h1>Нет статей</h1>
     {% endif %}
-
-    {% for article in articles %}
-        <h3>{{ article.title }}</h3>
-        <p><a href="{% url "article_view" article.pk %}">Подробнее...</a></p>
-        <p><a href="{% url "article_update_view" article.pk %}">Редактировать</a></p>
-        <p><a href="{% url "article_delete_view" article.pk %}">Удалить</a></p>
-    {% endfor %}
+    {% include "partial/article_list.html" %}
 {% endblock %}

@@ -1,0 +1,6 @@
+{% for article in articles %}
+    <h3>{{ article.title }}</h3>
+    <p><a href="{% url "article_view" article.pk %}">Подробнее...</a></p>
+    <p><a href="{% url "article_update_view" article.pk %}">Редактировать</a></p>
+    <p><a href="{% url "article_delete_view" article.pk %}">Удалить</a></p>
+{% endfor %}

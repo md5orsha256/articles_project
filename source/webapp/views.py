@@ -1,12 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from webapp.forms import ArticleForm, ArticleDeleteForm
-from webapp.models import Article
+from webapp.models import Article, STATUS_CHOICES
 
 
 def index_view(request):
-    articles = Article.objects.order_by("updated_at")
-    return render(request, 'index.html', {'articles': articles})
+    form = ArticleForm()
+    articles = Article.objects.filter().order_by("-created_at")
+    return render(request, 'index.html', {'articles': articles, "statuses": STATUS_CHOICES, "form": form})
+
+
+def index_status_view(request, status):
+    status_name = dict(STATUS_CHOICES)[status]
+    articles = Article.objects.filter(status=status).order_by("title")
+    return render(request, 'index_status.html', {'articles': articles, "status": status_name})
 
 
 def create_article_view(request):
