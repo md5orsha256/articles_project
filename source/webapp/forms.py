@@ -52,7 +52,12 @@ class ArticleForm(forms.ModelForm):
 
 class ArticleDeleteForm(forms.Form):
     title = forms.CharField(max_length=200,
-                            required=True,
                             label="Название",
                             error_messages={"required": "Поле обязательно для заполнения"},
+                            )
+
+class ArticleSearchForm(forms.Form):
+    search = forms.CharField(max_length=200,
+                            required=False,
+                            label="Введите название",
                             )

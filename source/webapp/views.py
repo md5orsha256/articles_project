@@ -1,13 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
-from webapp.forms import ArticleForm, ArticleDeleteForm
+from webapp.forms import ArticleForm, ArticleDeleteForm, ArticleSearchForm
 from webapp.models import Article, STATUS_CHOICES
 
 
 def index_view(request):
     form = ArticleForm()
-    articles = Article.objects.order_by("-created_at")
-    return render(request, 'index.html', {'articles': articles, "statuses": STATUS_CHOICES, "form": form})
+    search_value = ""
+    search_form = ArticleSearchForm(data=request.GET)
+    if search_form.is_valid():
+        search_value = search_form.cleaned_data.get("search")
+        articles = Article.objects.filter(title__contains=search_value).order_by("-created_at")
+    else:
+        articles = Article.objects.order_by("-created_at")
+    return render(request, 'index.html', {'articles': articles,
+                                          "statuses": STATUS_CHOICES,
+                                          "create_form": form,
+                                          "search_form": search_form,
+                                          "search_value": search_value})
 
 
 def index_status_view(request, status):
@@ -21,25 +31,21 @@ def create_article_view(request):
         form = ArticleForm()
         return render(request, 'article_create.html', {"form": form})
     else:
-        print(request.META)
         form = ArticleForm(data=request.POST)
         if form.is_valid():
-            # new_article = form.save() с модельной формой создать статью можно так
-            title = form.cleaned_data.get('title')
-            content = form.cleaned_data.get('content')
-            author = form.cleaned_data.get('author')
-            status = form.cleaned_data.get('status')
-            publish_date = form.cleaned_data.get('publish_date')
-            new_article = Article.objects.create(title=title,
-                                                 content=content,
-                                                 author=author,
-                                                 status=status,
-                                                 publish_date=publish_date)
+            new_article = form.save()
             return redirect("article_view", pk=new_article.pk)
         if "add" in request.META.get("HTTP_REFERER"):
             return render(request, 'article_create.html', {"form": form})
-        articles = Article.objects.order_by("-created_at")
-        return render(request, 'index.html', {"form": form, 'articles': articles})
+        search_value = request.POST.get("search")
+        search_form = ArticleSearchForm(initial={
+            "search": search_value
+        })
+        articles = Article.objects.filter(title__contains=search_value).order_by("-created_at")
+        return render(request, 'index.html', {"create_form": form,
+                                              'articles': articles,
+                                              "search_form": search_form,
+                                              "statuses": STATUS_CHOICES})
 
 
 def article_view(request, pk):

@@ -4,6 +4,9 @@
     {% for status in statuses %}
         <a href="{% url 'index_status' status.0 %}">{{ status.1 }}</a>
     {% endfor %}
+    <form action="{% url "index" %}" method="get">
+        {% include "partial/form.html" with form=search_form button_text="Найти" %}
+    </form>
 
     <div class="container">
         <div class="row">
@@ -17,7 +20,9 @@
             </div>
             <div class="col-12 col-md-6 col-lg-4">
                 <form action="{% url "article_add" %}" method="post">
-                    {% include "partial/form.html" with button_text="Создать" %}
+                    {% csrf_token %}
+                    {% include "partial/form.html" with form=create_form button_text="Создать" %}
+                    <input type="hidden" name="search" value="{{ search_value }}">
                 </form>
             </div>
         </div>

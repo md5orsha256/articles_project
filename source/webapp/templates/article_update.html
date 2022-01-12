@@ -8,6 +8,7 @@
 {% block content %}
     <h1>Update Article</h1>
     <form method="post">
+    {% csrf_token %}
         {% include "partial/form.html" with button_text="Изменить"  %}
     </form>
 
