@@ -14,9 +14,7 @@ class Article(BaseModel):
     title = models.CharField(max_length=200, null=False, blank=False, verbose_name="Заголовок")
     author = models.CharField(max_length=200, null=False, blank=False, verbose_name="Автор", default="Unknown")
     content = models.TextField(max_length=2000, null=False, blank=False, verbose_name="Контент")
-    tags = models.ManyToManyField("webapp.Tag", related_name="articles", through="webapp.ArticleTag",
-                                  through_fields=("article", "tag"))
-    # tags = models.ManyToManyField("webapp.Tag", related_name="articles")
+    tags = models.ManyToManyField("webapp.Tag", related_name="articles")
 
     def __str__(self):
         return f"{self.pk}. {self.author}: {self.title}"
@@ -37,20 +35,6 @@ class Tag(BaseModel):
         db_table = 'tags'
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
-
-
-class ArticleTag(models.Model):
-    article = models.ForeignKey("webapp.Article", on_delete=models.CASCADE,
-                                related_name="article_tags",
-                                verbose_name="Статья",
-                                )
-    tag = models.ForeignKey("webapp.Tag", on_delete=models.CASCADE,
-                            related_name="tag_articles",
-                            verbose_name="Тег",
-                            )
-
-    def __str__(self):
-        return f"{self.article} | {self.tag}"
 
 
 class Comment(BaseModel):
