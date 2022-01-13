@@ -19,16 +19,15 @@ def create_article_view(request):
     else:
         form = ArticleForm(data=request.POST)
         if form.is_valid():
-            title = form.cleaned_data.get('title')
-            content = form.cleaned_data.get('content')
-            author = form.cleaned_data.get('author')
-            new_article = Article.objects.create(title=title, content=content, author=author)
+            tags = form.cleaned_data.pop('tags')
+            new_article = Article.objects.create(**form.cleaned_data)
+            new_article.tags.set(tags)
+
             return redirect("article_view", pk=new_article.pk)
         return render(request, 'article_create.html', {"form": form})
 
 
 class ArticleView(TemplateView):
-    # template_name = "article_view.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,12 +42,15 @@ def article_update_view(request, pk):
         form = ArticleForm(initial={
             'title': article.title,
             'content': article.content,
-            'author': article.author
+            'author': article.author,
+            'tags': article.tags.all()
         })
         return render(request, 'article_update.html', {"article": article, "form": form})
     else:
         form = ArticleForm(data=request.POST)
         if form.is_valid():
+            tags = form.cleaned_data.get('tags')
+            article.tags.set(tags)
             article.title = request.POST.get('title')
             article.content = request.POST.get('content')
             article.author = request.POST.get('author')
