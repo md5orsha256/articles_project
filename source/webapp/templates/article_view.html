@@ -19,7 +19,12 @@
     <br>
     <h3>Комментарии</h3>
     {% for comment in article.comments.all %}
+        <span>{{ forloop.counter }}</span>
         <p>{{ comment.author }}</p>
         <p>{{ comment.content }}</p>
+    {% endfor %}
+    <h3>Теги</h3>
+    {% for tag in article.tags.all %}
+        {{ tag.name }}{% if not forloop.last %}, {% else %}. {% endif %}
     {% endfor %}
 {% endblock %}
