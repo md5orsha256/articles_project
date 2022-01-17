@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, RedirectView
 
+from webapp.base import FormView as CustomFormView
 from webapp.forms import ArticleForm
 from webapp.models import Article
 
@@ -12,19 +13,18 @@ class IndexView(View):
         return render(request, 'index.html', {'articles': articles})
 
 
-def create_article_view(request):
-    if request.method == 'GET':
-        form = ArticleForm()
-        return render(request, 'article_create.html', {"form": form})
-    else:
-        form = ArticleForm(data=request.POST)
-        if form.is_valid():
-            tags = form.cleaned_data.pop('tags')
-            new_article = Article.objects.create(**form.cleaned_data)
-            new_article.tags.set(tags)
+class ArticleCreateView(CustomFormView):
+    form_class = ArticleForm
+    template_name = "article_create.html"
 
-            return redirect("article_view", pk=new_article.pk)
-        return render(request, 'article_create.html', {"form": form})
+    def form_valid(self, form):
+        tags = form.cleaned_data.pop('tags')
+        self.object = Article.objects.create(**form.cleaned_data)
+        self.object.tags.set(tags)
+        return super().form_valid(form)
+
+    def get_redirect_url(self):
+        return redirect("article_view", pk=self.object.pk)
 
 
 class ArticleView(TemplateView):
