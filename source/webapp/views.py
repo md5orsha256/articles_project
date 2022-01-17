@@ -19,9 +19,10 @@ class ArticleCreateView(CustomFormView):
     template_name = "article_create.html"
 
     def form_valid(self, form):
-        tags = form.cleaned_data.pop('tags')
-        self.object = Article.objects.create(**form.cleaned_data)
-        self.object.tags.set(tags)
+        # tags = form.cleaned_data.pop('tags')
+        # self.object = Article.objects.create(**form.cleaned_data)
+        # self.object.tags.set(tags)
+        self.object = form.save()
         return super().form_valid(form)
 
     def get_redirect_url(self):
@@ -50,20 +51,26 @@ class ArticleUpdateView(FormView):
         context['article'] = self.article
         return context
 
-    def get_initial(self):
-        initial = {}
-        for key in 'title', 'content', 'author':
-            initial[key] = getattr(self.article, key)
-        initial['tags'] = self.article.tags.all()
-        return initial
+    # def get_initial(self):
+    #     initial = {}
+    #     for key in 'title', 'content', 'author':
+    #         initial[key] = getattr(self.article, key)
+    #     initial['tags'] = self.article.tags.all()
+    #     return initial
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.article
+        return kwargs
 
     def form_valid(self, form):
-        tags = form.cleaned_data.pop('tags')
-        for key, value in form.cleaned_data.items():
-            if value is not None:
-                setattr(self.article, key, value)
-        self.article.save()
-        self.article.tags.set(tags)
+        # tags = form.cleaned_data.pop('tags')
+        # for key, value in form.cleaned_data.items():
+        #     if value is not None:
+        #         setattr(self.article, key, value)
+        # self.article.save()
+        # self.article.tags.set(tags)
+        self.article = form.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -71,7 +78,6 @@ class ArticleUpdateView(FormView):
 
     def get_object(self):
         return get_object_or_404(Article, pk=self.kwargs.get("pk"))
-
 
 
 def article_delete_view(request, pk):
