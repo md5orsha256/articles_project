@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views import View
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView, RedirectView, FormView
 
 from webapp.base import FormView as CustomFormView
 from webapp.forms import ArticleForm
@@ -36,27 +37,41 @@ class ArticleView(TemplateView):
         return context
 
 
-def article_update_view(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == 'GET':
-        form = ArticleForm(initial={
-            'title': article.title,
-            'content': article.content,
-            'author': article.author,
-            'tags': article.tags.all()
-        })
-        return render(request, 'article_update.html', {"article": article, "form": form})
-    else:
-        form = ArticleForm(data=request.POST)
-        if form.is_valid():
-            tags = form.cleaned_data.get('tags')
-            article.tags.set(tags)
-            article.title = request.POST.get('title')
-            article.content = request.POST.get('content')
-            article.author = request.POST.get('author')
-            article.save()
-            return redirect("article_view", pk=article.pk)
-        return render(request, 'article_update.html', {"article": article, "form": form})
+class ArticleUpdateView(FormView):
+    form_class = ArticleForm
+    template_name = "article_update.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.article = self.get_object()
+        return super(ArticleUpdateView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['article'] = self.article
+        return context
+
+    def get_initial(self):
+        initial = {}
+        for key in 'title', 'content', 'author':
+            initial[key] = getattr(self.article, key)
+        initial['tags'] = self.article.tags.all()
+        return initial
+
+    def form_valid(self, form):
+        tags = form.cleaned_data.pop('tags')
+        for key, value in form.cleaned_data.items():
+            if value is not None:
+                setattr(self.article, key, value)
+        self.article.save()
+        self.article.tags.set(tags)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('article_view', kwargs={"pk": self.article.pk})
+
+    def get_object(self):
+        return get_object_or_404(Article, pk=self.kwargs.get("pk"))
+
 
 
 def article_delete_view(request, pk):
