@@ -27,13 +27,13 @@ class ArticleForm(forms.ModelForm):
             'tags': forms.CheckboxSelectMultiple
         }
 
-    def clean_title(self):
-        if len(self.cleaned_data.get('title')) < 5:
-            raise ValidationError(f"Значение должно быть длиннее 5 символов {self.cleaned_data.get('title')} не подходит")
-        return self.cleaned_data.get('title')
-
     def clean(self):
         cleaned_data = super().clean()
-        if cleaned_data['content'] == cleaned_data['title']:
+        title = cleaned_data['title']
+        content = cleaned_data['content']
+        if len(title) < 5:
+            self.add_error('title', ValidationError(
+                f"Значение должно быть длиннее 5 символов {title} не подходит"))
+        if title == content:
             raise ValidationError("Text of the article should not duplicate it's title!")
         return cleaned_data
