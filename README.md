@@ -27,6 +27,14 @@ pip install -r requirements.txt
 cd sourse
 ```
 
+Создайте в директории с проектом файл .env и заполните по примеру
+
+MYSQL_DATABASE=db_name
+MYSQL_USERNAME=username
+MYSQL_HOST=host
+MYSQL_PORT=port
+MYSQL_PASSWORD=password
+
 Примените миграции командой
 ```bash
 ./manage.py migrate
