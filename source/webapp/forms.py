@@ -1,5 +1,8 @@
+import re
+
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 from django.forms import widgets
 
 from webapp.models import Tag, Article
@@ -19,13 +22,22 @@ from webapp.models import Tag, Article
 
 
 class ArticleForm(forms.ModelForm):
-
+    author = forms.CharField(max_length=200, required=True, label="Автор", validators=[RegexValidator(
+        regex="^[a-zA-Zа-яА-Я]+$",
+        message="Вводите только буквы на русском или английском языке"
+    )])
     class Meta:
         model = Article
         exclude = []
         widgets = {
             'tags': forms.CheckboxSelectMultiple
         }
+
+    # def clean_author(self):
+    #     author = self.cleaned_data['author']
+    #     if not re.match("^[a-zA-Zа-яА-Я]+$", author):
+    #         raise ValidationError("Вводите только буквы на русском или английском языке")
+    #     return author
 
     def clean(self):
         cleaned_data = super().clean()
