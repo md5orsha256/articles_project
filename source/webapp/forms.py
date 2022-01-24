@@ -19,7 +19,6 @@ from webapp.models import Tag, Article
 
 
 class ArticleForm(forms.ModelForm):
-
     class Meta:
         model = Article
         exclude = []
@@ -37,3 +36,7 @@ class ArticleForm(forms.ModelForm):
         if title == content:
             raise ValidationError("Text of the article should not duplicate it's title!")
         return cleaned_data
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=30, required=False, label="Найти")

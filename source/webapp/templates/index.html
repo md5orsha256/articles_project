@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% include 'partial/simple_search.html' %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
     <h1>Статьи</h1>
     {% for article in articles %}
         <h3>{{ article.title }}</h3>
