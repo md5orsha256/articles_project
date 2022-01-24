@@ -8,4 +8,8 @@
         <p><a href="{% url "article_update_view" article.pk %}">Редактировать</a></p>
         <p><a href="{% url "article_delete_view" article.pk %}">Удалить</a></p>
     {% endfor %}
+
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
 {% endblock %}

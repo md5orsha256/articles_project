@@ -1,19 +1,32 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 
 from webapp.base import FormView as CustomFormView, ListView as CustomListView
 from webapp.forms import ArticleForm
 from webapp.models import Article
 
 
-class IndexView(CustomListView):
-    # model = Article
-    context_key = "articles"
+class IndexView(ListView):
+    model = Article
+    context_object_name = "articles"
     template_name = "index.html"
+    paginate_by = 3
+    paginate_orphans = 0
 
-    def get_objects(self):
-        return Article.objects.order_by("-updated_at")
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by("-updated_at")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        print(context)
+
+        return context
+
+
+    # def get_objects(self):
+    #     return Article.objects.order_by("-updated_at")
 
 
 class ArticleCreateView(CustomFormView):
