@@ -22,11 +22,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 {% block nav %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'article_add' %}">Создание статьи</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'article_add' %}">Создание статьи</a>
+                    </li>
                 {% endblock %}
             </ul>
+            {% include "partial/simple_search.html" with form=search_form %}
         </div>
     </div>
 </nav>

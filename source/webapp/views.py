@@ -33,7 +33,6 @@ class IndexView(ListView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context['form'] = SearchForm()
         if self.search_value:
-            context['form'] = SearchForm(initial={"search": self.search_value})
             context['search'] = self.search_value
         return context
 

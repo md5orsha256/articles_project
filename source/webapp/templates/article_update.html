@@ -6,6 +6,7 @@
         <a class="nav-link" href="{% url 'article_view' article.pk%}">Вернуться к статье</a>
     </li>{% endblock %}
 {% block content %}
+
     <h1>Update Article</h1>
     <form method="post">
         {% include "partial/form.html" with button_text="Изменить"  %}

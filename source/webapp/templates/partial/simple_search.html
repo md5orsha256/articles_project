@@ -1,4 +1,4 @@
-<form class="text-center" action="" method="GET">
+<form class="ms-auto" action="{% url "index" %}" method="GET">
     <label for="{{ form.search.id_for_label }}">{{ form.search.label }}:</label>
     {{ form.search }}
     <input type="submit" value="Поиск">
