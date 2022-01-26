@@ -1,8 +1,9 @@
+{% load request_get_replace_page %}
 <div class="pagination">
     <span class="step-links">
-        <a href="?page=1{% if search %}&search={{ search }}{% endif %}">&laquo; В начало</a>
+        <a href="?{{ request|replace_request:1 }}">&laquo; В начало</a>
         {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}">Назад</a>
+            <a href="?{{ request|replace_request:page_obj.previous_page_number }}">Назад</a>
         {% else %}
             <span class="page-disabled">Назад</span>
         {% endif %}
@@ -11,15 +12,19 @@
             <label for="page">
                 Страница <input type="text" name="page" id="page" value="{{ page_obj.number }}">
                 из {{ page_obj.paginator.num_pages }}.
-                <input type="hidden" name="search" value="{{ search }}">
+                {% for key, value in request.GET.items %}
+                    {% if key != 'page' %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                    {% endif %}
+                {% endfor %}
             </label>
         </form>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}">Далее</a>
+            <a href="?{{ request|replace_request:page_obj.next_page_number }}">Далее</a>
         {% else %}
             <span class="page-disabled">Далее</span>
         {% endif %}
-        <a href="?page={{ page_obj.paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}">В конец &raquo;</a>
+        <a href="?{{ request|replace_request:page_obj.paginator.num_pages }}">В конец &raquo;</a>
     </span>
 </div>
