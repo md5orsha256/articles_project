@@ -1,9 +1,9 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import  FormView, ListView, DetailView
 
-from webapp.base import FormView as CustomFormView
+from webapp.views.base import FormView as CustomFormView
 from webapp.forms import ArticleForm, SearchForm
 from webapp.models import Article
 
@@ -56,12 +56,14 @@ class ArticleCreateView(CustomFormView):
         return redirect("article_view", pk=self.object.pk)
 
 
-class ArticleView(TemplateView):
+class ArticleView(DetailView):
+    template_name = 'articles/view.html'
+    model = Article
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        article = get_object_or_404(Article, pk=kwargs.get("pk"))
-        context['article'] = article
+        comments = self.object.comments.order_by("-created_at")
+        context['comments'] = comments
         return context
 
 

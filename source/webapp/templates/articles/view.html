@@ -18,7 +18,7 @@
     <p>{{ article.content }}</p>
     <br>
     <h3>Комментарии</h3>
-    {% for comment in article.comments.all %}
+    {% for comment in comments %}
         <span>{{ forloop.counter }}</span>
         <p>{{ comment.author }}</p>
         <p>{{ comment.content }}</p>
