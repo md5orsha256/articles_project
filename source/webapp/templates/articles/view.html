@@ -11,6 +11,9 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url "article_delete_view" article.pk %}">Удалить</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "article_comment_create" article.pk %}">Добавить коммент</a>
+    </li>
 {% endblock %}
 {% block content %}
     <h1>{{ article.author }}</h1>

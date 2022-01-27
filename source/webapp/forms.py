@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import widgets
 
-from webapp.models import Tag, Article
+from webapp.models import Tag, Article, Comment
 
 
 # def min_length_validator(value):
@@ -40,3 +40,9 @@ class ArticleForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     search = forms.CharField(max_length=30, required=False, label="Найти")
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model=Comment
+        fields=("content", "author")
