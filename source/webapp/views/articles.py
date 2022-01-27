@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.generic import  FormView, ListView, DetailView
+from django.views.generic import FormView, ListView, DetailView, CreateView
 
 from webapp.views.base import FormView as CustomFormView
 from webapp.forms import ArticleForm, SearchForm
@@ -44,16 +44,13 @@ class IndexView(ListView):
             return self.form.cleaned_data.get("search")
 
 
-class ArticleCreateView(CustomFormView):
+class ArticleCreateView(CreateView):
+    model = Article
     form_class = ArticleForm
     template_name = "articles/create.html"
 
-    def form_valid(self, form):
-        self.object = form.save()
-        return super().form_valid(form)
-
-    def get_redirect_url(self):
-        return redirect("article_view", pk=self.object.pk)
+    def get_success_url(self):
+        return reverse('article_view', kwargs={'pk': self.object.pk})
 
 
 class ArticleView(DetailView):
