@@ -49,9 +49,6 @@ class ArticleCreateView(CreateView):
     form_class = ArticleForm
     template_name = "articles/create.html"
 
-    def get_success_url(self):
-        return reverse('article_view', kwargs={'pk': self.object.pk})
-
 
 class ArticleView(DetailView):
     template_name = 'articles/view.html'

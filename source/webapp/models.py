@@ -3,7 +3,7 @@ from django.db import models
 
 
 # Create your models here.
-
+from django.urls import reverse
 
 
 class BaseModel(models.Model):
@@ -20,6 +20,12 @@ class Article(BaseModel):
                               validators=(MinLengthValidator(5),))
     content = models.TextField(max_length=2000, null=False, blank=False, verbose_name="Контент")
     tags = models.ManyToManyField("webapp.Tag", related_name="articles")
+
+    def get_absolute_url(self):
+        return reverse('article_view', kwargs={'pk': self.pk})
+
+    def upper(self):
+        return self.title.upper()
 
     def __str__(self):
         return f"{self.pk}. {self.author}: {self.title}"
