@@ -1,10 +1,9 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.utils.http import urlencode
 from django.views.generic import TemplateView, FormView, ListView
 
-from webapp.base import FormView as CustomFormView, ListView as CustomListView
+from webapp.base import FormView as CustomFormView
 from webapp.forms import ArticleForm, SearchForm
 from webapp.models import Article
 
@@ -12,7 +11,7 @@ from webapp.models import Article
 class IndexView(ListView):
     model = Article
     context_object_name = "articles"
-    template_name = "index.html"
+    template_name = "articles/index.html"
     paginate_by = 3
     paginate_orphans = 0
 
@@ -45,15 +44,11 @@ class IndexView(ListView):
             return self.form.cleaned_data.get("search")
 
 
-
 class ArticleCreateView(CustomFormView):
     form_class = ArticleForm
-    template_name = "article_create.html"
+    template_name = "articles/create.html"
 
     def form_valid(self, form):
-        # tags = form.cleaned_data.pop('tags')
-        # self.object = Article.objects.create(**form.cleaned_data)
-        # self.object.tags.set(tags)
         self.object = form.save()
         return super().form_valid(form)
 
@@ -72,7 +67,7 @@ class ArticleView(TemplateView):
 
 class ArticleUpdateView(FormView):
     form_class = ArticleForm
-    template_name = "article_update.html"
+    template_name = "articles/update.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.article = self.get_object()
@@ -83,25 +78,12 @@ class ArticleUpdateView(FormView):
         context['article'] = self.article
         return context
 
-    # def get_initial(self):
-    #     initial = {}
-    #     for key in 'title', 'content', 'author':
-    #         initial[key] = getattr(self.article, key)
-    #     initial['tags'] = self.article.tags.all()
-    #     return initial
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['instance'] = self.article
         return kwargs
 
     def form_valid(self, form):
-        # tags = form.cleaned_data.pop('tags')
-        # for key, value in form.cleaned_data.items():
-        #     if value is not None:
-        #         setattr(self.article, key, value)
-        # self.article.save()
-        # self.article.tags.set(tags)
         self.article = form.save()
         return super().form_valid(form)
 
@@ -115,7 +97,7 @@ class ArticleUpdateView(FormView):
 def article_delete_view(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if request.method == 'GET':
-        return render(request, "article_delete.html", {"article": article})
+        return render(request, "articles/delete.html", {"article": article})
     else:
         article.delete()
         return redirect("index")
