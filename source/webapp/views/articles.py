@@ -1,9 +1,8 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.generic import FormView, ListView, DetailView, CreateView
+from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView
 
-from webapp.views.base import FormView as CustomFormView
 from webapp.forms import ArticleForm, SearchForm
 from webapp.models import Article
 
@@ -61,33 +60,10 @@ class ArticleView(DetailView):
         return context
 
 
-class ArticleUpdateView(FormView):
+class ArticleUpdateView(UpdateView):
     form_class = ArticleForm
     template_name = "articles/update.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.article = self.get_object()
-        return super(ArticleUpdateView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['article'] = self.article
-        return context
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['instance'] = self.article
-        return kwargs
-
-    def form_valid(self, form):
-        self.article = form.save()
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse('article_view', kwargs={"pk": self.article.pk})
-
-    def get_object(self):
-        return get_object_or_404(Article, pk=self.kwargs.get("pk"))
+    model = Article
 
 
 def article_delete_view(request, pk):
