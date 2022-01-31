@@ -44,5 +44,18 @@ class SearchForm(forms.Form):
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model=Comment
-        fields=("content", "author")
+        model = Comment
+        fields = ("content", "author")
+
+
+class ArticleDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ("title",)
+
+    def clean_title(self):
+        print(self.instance.title, self.cleaned_data.get("title"))
+        if self.instance.title != self.cleaned_data.get("title"):
+            print('error')
+            raise ValidationError("Название статьи не соответствует")
+        return self.cleaned_data.get("title")

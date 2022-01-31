@@ -3,8 +3,8 @@
 {% block content %}
     <form method="POST">
     {% csrf_token %}
-        <h2>Вы действительно хотите удалить статью {{ article.title }}</h2>
-        <input type="submit" value="Да">
+        <h2>Введите название статьи {{ article.title }}</h2>
+        {% include 'partial/form.html' with button_text="Удалить" %}
     </form>
     <a href="{% url "article_view" article.pk %}">Нет</a>
 {% endblock %}

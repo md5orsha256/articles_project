@@ -26,6 +26,7 @@
         <p>{{ comment.author }}</p>
         <p>{{ comment.content }}</p>
         <p><a href="{% url "comment_update_view" comment.pk %}">Изменить</a></p>
+        <p><a href="{% url "comment_delete_view" comment.pk %}">Удалить</a></p>
     {% endfor %}
     <h3>Теги</h3>
     {% for tag in article.tags.all %}
