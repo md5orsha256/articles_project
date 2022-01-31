@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from webapp.forms import ArticleForm, SearchForm
 from webapp.models import Article
@@ -66,10 +66,12 @@ class ArticleUpdateView(UpdateView):
     model = Article
 
 
-def article_delete_view(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == 'GET':
-        return render(request, "articles/delete.html", {"article": article})
-    else:
-        article.delete()
-        return redirect("index")
+class ArticleDeleteView(DeleteView):
+    model = Article
+    template_name = "articles/delete.html"
+    success_url = reverse_lazy('index')
+
+    # def get(self, request, *args, **kwargs):
+    #     return self.delete(request, *args, **kwargs)
+
+
