@@ -54,8 +54,6 @@ class ArticleDeleteForm(forms.ModelForm):
         fields = ("title",)
 
     def clean_title(self):
-        print(self.instance.title, self.cleaned_data.get("title"))
         if self.instance.title != self.cleaned_data.get("title"):
-            print('error')
             raise ValidationError("Название статьи не соответствует")
         return self.cleaned_data.get("title")

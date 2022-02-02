@@ -70,20 +70,10 @@ class ArticleDeleteView(DeleteView):
     model = Article
     template_name = "articles/delete.html"
     success_url = reverse_lazy('index')
+    form_class = ArticleDeleteForm
 
-    def dispatch(self, request, *args, **kwargs):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
         if self.request.method == "POST":
-            self.object_form = ArticleDeleteForm(instance=self.get_object(), data=self.request.POST)
-        else:
-            self.object_form = ArticleDeleteForm()
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.object_form
-        return context
-
-    def post(self, request, *args, **kwargs):
-        if self.object_form.is_valid():
-            return super().delete(request, *args, **kwargs)
-        return super().get(request, *args, **kwargs)
+            kwargs['instance'] = self.object
+        return kwargs
