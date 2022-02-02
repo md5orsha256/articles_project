@@ -5,42 +5,16 @@ from django.views.generic import FormView, ListView, DetailView, CreateView, Upd
 
 from webapp.forms import ArticleForm, SearchForm, ArticleDeleteForm
 from webapp.models import Article
+from webapp.views.base import SearchView
 
 
-class IndexView(ListView):
+class IndexView(SearchView):
     model = Article
     context_object_name = "articles"
     template_name = "articles/index.html"
     paginate_by = 3
     paginate_orphans = 0
-
-    def get(self, request, *args, **kwargs):
-        self.form = self.get_form()
-        self.search_value = self.get_search_value()
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if self.search_value:
-            print(self.search_value)
-            query = Q(title__icontains=self.search_value) | Q(author__icontains=self.search_value)
-            queryset = queryset.filter(query)
-        return queryset.order_by("-updated_at")
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(object_list=object_list, **kwargs)
-        context['form'] = SearchForm()
-        if self.search_value:
-            context['form'] = SearchForm(initial={"search": self.search_value})
-            context['search'] = self.search_value
-        return context
-
-    def get_form(self):
-        return SearchForm(self.request.GET)
-
-    def get_search_value(self):
-        if self.form.is_valid():
-            return self.form.cleaned_data.get("search")
+    search_fields = ["title__icontains", "author__icontains"]
 
 
 class ArticleCreateView(CreateView):
