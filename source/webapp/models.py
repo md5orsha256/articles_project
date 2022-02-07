@@ -22,7 +22,7 @@ class Article(BaseModel):
     tags = models.ManyToManyField("webapp.Tag", related_name="articles")
 
     def get_absolute_url(self):
-        return reverse('article_view', kwargs={'pk': self.pk})
+        return reverse('webapp:article_view', kwargs={'pk': self.pk})
 
     def upper(self):
         return self.title.upper()

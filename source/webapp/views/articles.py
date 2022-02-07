@@ -1,9 +1,7 @@
-from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
-from webapp.forms import ArticleForm, SearchForm, ArticleDeleteForm
+from webapp.forms import ArticleForm, ArticleDeleteForm
 from webapp.models import Article
 from webapp.views.base import SearchView
 
@@ -44,7 +42,7 @@ class ArticleUpdateView(UpdateView):
 class ArticleDeleteView(DeleteView):
     model = Article
     template_name = "articles/delete.html"
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('webapp:index')
     form_class = ArticleDeleteForm
 
     def get_form_kwargs(self):

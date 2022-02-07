@@ -3,7 +3,7 @@
 {% block title %}Update article{% endblock %}
 {% block nav %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'article_view' article.pk%}">Вернуться к статье</a>
+        <a class="nav-link" href="{% url 'webapp:article_view' article.pk%}">Вернуться к статье</a>
     </li>{% endblock %}
 {% block content %}
     <h1>Update Article</h1>

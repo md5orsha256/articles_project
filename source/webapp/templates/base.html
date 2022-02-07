@@ -14,7 +14,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href={% url 'index' %}>Home</a>
+        <a class="navbar-brand" href={% url 'webapp:index' %}>Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,7 +23,7 @@
             <ul class="navbar-nav">
                 {% block nav %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'article_add' %}">Создание статьи</a>
+                    <a class="nav-link" href="{% url 'webapp:article_add' %}">Создание статьи</a>
                 </li>
                 {% endblock %}
             </ul>

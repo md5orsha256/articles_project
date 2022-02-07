@@ -7,6 +7,8 @@ from webapp.views import (
     ArticleUpdateView,
     ArticleDeleteView, IndexView, CommentCreateView, CommentUpdateView, CommentDeleteView)
 
+app_name = 'webapp'
+
 urlpatterns = [
     path('', IndexView.as_view(), name="index"),
     path('articles/', RedirectView.as_view(pattern_name="index")),

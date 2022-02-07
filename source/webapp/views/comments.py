@@ -16,7 +16,7 @@ class CommentCreateView(CreateView):
         comment = form.save(commit=False)
         comment.article = article
         comment.save()
-        return redirect('article_view', pk=article.pk)
+        return redirect('webapp:article_view', pk=article.pk)
 
 
 class CommentUpdateView(UpdateView):
@@ -25,7 +25,7 @@ class CommentUpdateView(UpdateView):
     form_class = CommentForm
 
     def get_success_url(self):
-        return reverse("article_view", kwargs={"pk": self.object.article.pk})
+        return reverse("webapp:article_view", kwargs={"pk": self.object.article.pk})
 
 
 class CommentDeleteView(DeleteView):
@@ -35,4 +35,4 @@ class CommentDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse("article_view", kwargs={"pk": self.object.article.pk})
+        return reverse("webapp:article_view", kwargs={"pk": self.object.article.pk})

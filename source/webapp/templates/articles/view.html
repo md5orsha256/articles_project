@@ -3,16 +3,16 @@
 {% block title %}Article {{ article.pk }}{% endblock %}
 {% block nav %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'article_add' %}">Создание статьи</a>
+        <a class="nav-link" href="{% url 'webapp:article_add' %}">Создание статьи</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url "article_update_view" article.pk %}">Редактировать</a>
+        <a class="nav-link" href="{% url "webapp:article_update_view" article.pk %}">Редактировать</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url "article_delete_view" article.pk %}">Удалить</a>
+        <a class="nav-link" href="{% url "webapp:article_delete_view" article.pk %}">Удалить</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url "article_comment_create" article.pk %}">Добавить коммент</a>
+        <a class="nav-link" href="{% url "webapp:article_comment_create" article.pk %}">Добавить коммент</a>
     </li>
 {% endblock %}
 {% block content %}
@@ -25,8 +25,8 @@
         <span>{{ forloop.counter }}</span>
         <p>{{ comment.author }}</p>
         <p>{{ comment.content }}</p>
-        <p><a href="{% url "comment_update_view" comment.pk %}">Изменить</a></p>
-        <p><a href="{% url "comment_delete_view" comment.pk %}">Удалить</a></p>
+        <p><a href="{% url "webapp:comment_update_view" comment.pk %}">Изменить</a></p>
+        <p><a href="{% url "webapp:comment_delete_view" comment.pk %}">Удалить</a></p>
     {% endfor %}
     <h3>Теги</h3>
     {% for tag in article.tags.all %}
