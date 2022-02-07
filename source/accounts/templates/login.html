@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>Вход</h1>
-    <form action="{% url 'accounts:login' %}" method="post" class="text-center ms-auto me-auto w-50">
+    <form method="post" class="text-center ms-auto me-auto w-50">
         {% csrf_token %}
         {% if has_error %}
             <p class="text-danger">Неверное имя пользователя или пароль.</p>
