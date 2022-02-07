@@ -15,6 +15,7 @@ class IndexView(SearchView):
     paginate_by = 3
     paginate_orphans = 0
     search_fields = ["title__icontains", "author__icontains"]
+    ordering=["-updated_at"]
 
 
 class ArticleCreateView(CreateView):
