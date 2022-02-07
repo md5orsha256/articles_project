@@ -22,9 +22,18 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 {% block nav %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'webapp:article_add' %}">Создание статьи</a>
-                </li>
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">Вход</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'webapp:article_add' %}">Создание статьи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:logout' %}">Выход</a>
+                        </li>
+                    {% endif %}
                 {% endblock %}
             </ul>
         </div>
