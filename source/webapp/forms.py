@@ -1,27 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import widgets
 
 from webapp.models import Tag, Article, Comment
-
-
-# def min_length_validator(value):
-#     if len(value) < 5:
-#         raise ValidationError(f"Значение должно быть длиннее 5 символов {value} не подходит")
-
-
-# class ArticleForm(forms.Form):
-#     title = forms.CharField(max_length=200, required=True, label="Название", validators=(min_length_validator,))
-#     author = forms.CharField(max_length=200, required=True, label="Автор")
-#     content = forms.CharField(max_length=2000, required=True, label="Описание",
-#                               widget=widgets.Textarea(attrs={"rows": 5, "cols": 50}))
-#     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, label="Теги")
 
 
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        exclude = []
+        fields = ("title", "tags", "content")
         widgets = {
             'tags': forms.CheckboxSelectMultiple
         }
@@ -45,7 +31,7 @@ class SearchForm(forms.Form):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ("content", "author")
+        fields = ("content",)
 
 
 class ArticleDeleteForm(forms.ModelForm):
