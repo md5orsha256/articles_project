@@ -1,9 +1,13 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
 
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 from django.urls import reverse
+
+
+User = get_user_model()
 
 
 class BaseModel(models.Model):
@@ -18,6 +22,13 @@ class Article(BaseModel):
     title = models.CharField(max_length=200, null=False, blank=False, verbose_name="Заголовок")
     content = models.TextField(max_length=2000, null=False, blank=False, verbose_name="Контент")
     tags = models.ManyToManyField("webapp.Tag", related_name="articles")
+    author = models.ForeignKey(
+        User,
+        related_name="articles",
+        on_delete=models.SET_DEFAULT,
+        default=1,
+        verbose_name="Автор",
+    )
 
     def get_absolute_url(self):
         return reverse('webapp:article_view', kwargs={'pk': self.pk})
@@ -48,6 +59,13 @@ class Tag(BaseModel):
 
 class Comment(BaseModel):
     content = models.TextField(max_length=2000, verbose_name="Контент")
+    author = models.ForeignKey(
+        User,
+        related_name="comments",
+        default=1,
+        on_delete=models.CASCADE,
+        verbose_name="Автор"
+    )
     article = models.ForeignKey("webapp.Article", on_delete=models.CASCADE,
                                 related_name="comments",
                                 verbose_name="Статья",
