@@ -2,16 +2,25 @@
 
 {% block title %}Article {{ article.pk }}{% endblock %}
 {% block nav %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url "webapp:article_update_view" article.pk %}">Редактировать</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url "webapp:article_delete_view" article.pk %}">Удалить</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url "webapp:article_comment_create" article.pk %}">Добавить коммент</a>
-    </li>
+    {% if perms.webapp.change_article %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:article_update_view" article.pk %}">Редактировать</a>
+        </li>
+    {% endif %}
+
+    {% if perms.webapp.delete_article %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:article_delete_view" article.pk %}">Удалить</a>
+        </li>
+    {% endif %}
+
+    {% if perms.webapp.add_article %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:article_comment_create" article.pk %}">Добавить коммент</a>
+        </li>
+    {% endif %}
 {% endblock %}
+
 {% block content %}
     <h1>{{ article.author }}</h1>
     <h3>{{ article.title }}</h3>
@@ -22,8 +31,15 @@
         <span>{{ forloop.counter }}</span>
         <p>{{ comment.author }}</p>
         <p>{{ comment.content }}</p>
-        <p><a href="{% url "webapp:comment_update_view" comment.pk %}">Изменить</a></p>
-        <p><a href="{% url "webapp:comment_delete_view" comment.pk %}">Удалить</a></p>
+
+        {% if perms.webapp.change_comment or user == commnet.author %}
+            <p><a href="{% url "webapp:comment_update_view" comment.pk %}">Изменить</a></p>
+        {% endif %}
+
+        {% if perms.webapp.delete_comment or user == commnet.author %}
+            <p><a href="{% url "webapp:comment_delete_view" comment.pk %}">Удалить</a></p>
+        {% endif %}
+
     {% endfor %}
     <h3>Теги</h3>
     {% for tag in article.tags.all %}

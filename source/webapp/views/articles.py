@@ -1,5 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin
+)
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
@@ -18,10 +20,15 @@ class IndexView(SearchView):
     ordering=["-updated_at"]
 
 
-class ArticleCreateView(LoginRequiredMixin, CreateView):
+class ArticleCreateView(PermissionRequiredMixin, CreateView):
     model = Article
     form_class = ArticleForm
     template_name = "articles/create.html"
+    permission_required = "webapp.add_article"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 class ArticleView(DetailView):
@@ -35,13 +42,17 @@ class ArticleView(DetailView):
         return context
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "webapp.change_article"
     form_class = ArticleForm
     template_name = "articles/update.html"
     model = Article
 
+    def has_permission(self):
+        return super().has_permission() or self.request.user == self.get_object().author
 
-class ArticleDeleteView(DeleteView):
+
+class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
     model = Article
     template_name = "articles/delete.html"
     success_url = reverse_lazy('webapp:index')
