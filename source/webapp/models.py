@@ -16,8 +16,6 @@ class BaseModel(models.Model):
 
 class Article(BaseModel):
     title = models.CharField(max_length=200, null=False, blank=False, verbose_name="Заголовок")
-    author = models.CharField(max_length=200, null=False, blank=False, verbose_name="Автор", default="Unknown",
-                              validators=(MinLengthValidator(5),))
     content = models.TextField(max_length=2000, null=False, blank=False, verbose_name="Контент")
     tags = models.ManyToManyField("webapp.Tag", related_name="articles")
 
@@ -50,7 +48,6 @@ class Tag(BaseModel):
 
 class Comment(BaseModel):
     content = models.TextField(max_length=2000, verbose_name="Контент")
-    author = models.CharField(max_length=200, null=True, blank=True, verbose_name="Автор", default="Аноним")
     article = models.ForeignKey("webapp.Article", on_delete=models.CASCADE,
                                 related_name="comments",
                                 verbose_name="Статья",
