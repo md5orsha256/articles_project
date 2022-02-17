@@ -132,6 +132,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MEDIA_ROOT = BASE_DIR.joinpath("uploads")
+MEDIA_URL = "media/"
+
 
 try:
     from hello.local_settings import *
