@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Профиль пользователя {{ user_object.username }}</h1>
+    <p><strong>Почта: </strong>{{ user_object.email|default:"Не указана"}}</p>
+    <p><strong>Дата рождения: </strong>{{ user_object.profile.birth_date|date:'d.m.Y'|default:"Не указана" }}</p>
+    <p><strong>Фамилия: </strong>{{ user_object.last_name|default:"Не указана" }}</p>
+    <p><strong>Имя: </strong>{{ user_object.first_name|default:"Не указанo" }}</p>
+
+    {% if user_object.profile.avatar %}
+        <img src="{{ user_object.profile.avatar.url }}" alt="user avatar">
+    {% endif %}
+
+    {% include "partial/article_list.html" %}
+
+{% endblock content %}
