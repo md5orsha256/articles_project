@@ -1,0 +1,27 @@
+{% if is_paginated %}
+    {% include 'partial/pagination.html' %}
+{% endif %}
+
+<h2>Статьи</h2>
+
+{% for article in articles %}
+
+    <h3>{{ article.upper }}</h3>
+
+    <p><a href="{{ article.get_absolute_url }}">Подробнее...</a></p>
+
+    {% if perms.webapp.change_article or user == article.author %}
+        <p><a href="{% url "webapp:article_update_view" article.pk %}">Редактировать</a></p>
+    {% endif %}
+
+    {% if perms.webapp.delete_article %}
+        <p><a href="{% url "webapp:article_delete_view" article.pk %}">Удалить</a></p>
+    {% endif %}
+
+{% empty %}
+    <p>Статьи не найдены...</p>
+{% endfor %}
+
+{% if is_paginated %}
+    {% include 'partial/pagination.html' %}
+{% endif %}
