@@ -1,0 +1,63 @@
+[
+{
+  "model": "auth.group",
+  "fields": {
+    "name": "Авторы",
+    "permissions": [
+      [
+        "add_article",
+        "webapp",
+        "article"
+      ],
+      [
+        "view_article",
+        "webapp",
+        "article"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "fields": {
+    "name": "Модераторы",
+    "permissions": [
+      [
+        "change_article",
+        "webapp",
+        "article"
+      ],
+      [
+        "delete_article",
+        "webapp",
+        "article"
+      ],
+      [
+        "change_comment",
+        "webapp",
+        "comment"
+      ],
+      [
+        "delete_comment",
+        "webapp",
+        "comment"
+      ],
+      [
+        "add_tag",
+        "webapp",
+        "tag"
+      ],
+      [
+        "change_tag",
+        "webapp",
+        "tag"
+      ],
+      [
+        "delete_tag",
+        "webapp",
+        "tag"
+      ]
+    ]
+  }
+}
+]

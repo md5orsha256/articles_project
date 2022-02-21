@@ -1,0 +1,56 @@
+[
+{
+  "model": "webapp.tag",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-02-21T12:14:22.860Z",
+    "updated_at": "2022-02-21T12:14:22.860Z",
+    "name": "Спорт"
+  }
+},
+{
+  "model": "webapp.tag",
+  "pk": 2,
+  "fields": {
+    "created_at": "2022-02-21T12:14:28.868Z",
+    "updated_at": "2022-02-21T12:14:28.869Z",
+    "name": "Политика"
+  }
+},
+{
+  "model": "webapp.tag",
+  "pk": 3,
+  "fields": {
+    "created_at": "2022-02-21T12:14:33.958Z",
+    "updated_at": "2022-02-21T12:14:33.958Z",
+    "name": "Финансы"
+  }
+},
+{
+  "model": "webapp.tag",
+  "pk": 4,
+  "fields": {
+    "created_at": "2022-02-21T12:14:44.727Z",
+    "updated_at": "2022-02-21T12:14:44.727Z",
+    "name": "Технологии"
+  }
+},
+{
+  "model": "webapp.tag",
+  "pk": 5,
+  "fields": {
+    "created_at": "2022-02-21T12:14:49.790Z",
+    "updated_at": "2022-02-21T12:14:49.790Z",
+    "name": "Наука"
+  }
+},
+{
+  "model": "webapp.tag",
+  "pk": 6,
+  "fields": {
+    "created_at": "2022-02-21T12:14:55.531Z",
+    "updated_at": "2022-02-21T12:14:55.531Z",
+    "name": "Литература"
+  }
+}
+]

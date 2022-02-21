@@ -1,0 +1,54 @@
+[
+{
+  "model": "webapp.article",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-02-21T12:11:01.058Z",
+    "updated_at": "2022-02-21T12:15:13.908Z",
+    "title": "Статья  №1",
+    "content": "Текст статьи #1\r\n\r\nЭто тестовая статья под номером 1.",
+    "author": [
+      "author"
+    ],
+    "tags": [
+      2,
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 2,
+  "fields": {
+    "created_at": "2022-02-21T12:15:42.833Z",
+    "updated_at": "2022-02-21T12:15:42.833Z",
+    "title": "Статья №2",
+    "content": "Текст статьи #2\r\n\r\nЭто тестовая статья под номером 2.",
+    "author": [
+      "author"
+    ],
+    "tags": [
+      1,
+      6
+    ]
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 3,
+  "fields": {
+    "created_at": "2022-02-21T12:17:29.051Z",
+    "updated_at": "2022-02-21T12:17:29.051Z",
+    "title": "Статья №3",
+    "content": "Текст статьи #3\r\n\r\nЭто тестовая статья под номером 3.",
+    "author": [
+      "author"
+    ],
+    "tags": [
+      2,
+      3
+    ]
+  }
+}
+]

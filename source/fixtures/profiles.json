@@ -1,0 +1,24 @@
+[
+{
+  "model": "accounts.profile",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "author"
+    ],
+    "birth_date": "1989-02-20",
+    "avatar": "avatars/low-poly-grid-haikei_Vy7DtH8.png"
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "moderator"
+    ],
+    "birth_date": "1999-02-21",
+    "avatar": "avatars/low-poly-grid-haikei_FzLlEzJ.png"
+  }
+}
+]
