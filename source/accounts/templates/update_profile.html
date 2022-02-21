@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include "partial/form.html" with fields_only=True %}
+        {% include "partial/form.html" with fields_only=True form=profile_form %}
+        <button type="submit" value="Сохранить"></button>
+    </form>
+{% endblock content %}

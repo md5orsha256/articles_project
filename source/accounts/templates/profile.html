@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 
+{% block nav %}
+    {% if user_object == user %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:update-user' %}">Редактирвоать профиль</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:change-password' %}">Изменить пароль</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <h1>Профиль пользователя {{ user_object.username }}</h1>
     <p><strong>Почта: </strong>{{ user_object.email|default:"Не указана"}}</p>
