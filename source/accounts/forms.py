@@ -8,6 +8,8 @@ User = get_user_model()
 
 
 class MyUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
     class Meta(UserCreationForm.Meta):
         fields = ("username", "password1", "password2", "email", "first_name", "last_name")
 

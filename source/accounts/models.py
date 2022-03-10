@@ -42,8 +42,8 @@ class EmailConfirmationToken(models.Model):
     TOKEN_LIFETIME_SECONDS = 2 * 60 * 60
 
     token = models.CharField(null=False, max_length=255, unique=True, default=token_urlsafe)
-    created_at = models.DateField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def is_expired(self):
+    def is_expired(self) -> bool:
         return self.created_at + timedelta(seconds=self.TOKEN_LIFETIME_SECONDS) < timezone.now()
