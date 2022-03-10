@@ -1,12 +1,16 @@
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout, get_user_model, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.forms import MyUserCreationForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm
-from accounts.models import Profile
+from accounts.models import Profile, EmailConfirmationToken
 
 
 User = get_user_model()
@@ -18,9 +22,25 @@ class RegisterView(CreateView):
     form_class = MyUserCreationForm
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
         Profile.objects.create(user=user)
-        login(self.request, user)
+
+        token = EmailConfirmationToken.objects.create(user=user)
+
+        confirm_email_url = self.request.build_absolute_uri(
+            reverse("accounts:confirm-email", kwargs={"token": token.token})
+        )
+
+        send_mail(
+            'Подтверждение адреса электронной почты',
+            f'Перейдите по ссылке {confirm_email_url}, чтобы подтвердить адрес электронной почты',
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+            fail_silently=False,
+        )
+
         return redirect(self.get_success_url())
 
     def get_success_url(self):
