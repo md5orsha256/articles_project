@@ -158,3 +158,22 @@ class UserPasswordChangeView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse("accounts:user-profile", kwargs={"pk": self.request.user.pk})
+
+
+class EmailConfirmView(View):
+    def get(self, request, *args, **kwargs):
+        email_confirm_token = kwargs.get("token")
+        token = get_object_or_404(EmailConfirmationToken, token=email_confirm_token)
+
+        if token.is_expired():
+            return HttpResponseBadRequest(b"Token is expired")
+
+        user = token.user
+        user.is_active = True
+        user.save()
+        token.delete()
+
+        login(request, user)
+
+        redirect_to = reverse("webapp:index")
+        return HttpResponseRedirect(redirect_to=redirect_to)
