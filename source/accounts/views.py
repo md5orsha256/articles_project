@@ -1,10 +1,10 @@
 from django.conf import settings
-from django.contrib.auth import authenticate, login, logout, get_user_model, update_session_auth_hash
+from django.contrib.auth import login, get_user_model, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -50,27 +50,6 @@ class RegisterView(CreateView):
         if not next_url:
             next_url = reverse('webapp:index')
         return next_url
-
-
-def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('webapp:index')
-    context = {}
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('webapp:index')
-        else:
-            context['has_error'] = True
-    return render(request, 'login.html', context=context)
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('webapp:index')
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
