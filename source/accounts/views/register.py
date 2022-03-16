@@ -50,11 +50,14 @@ class RegisterView(CreateView):
         return next_url
 
 
-
 class EmailConfirmView(View):
     def get(self, request, *args, **kwargs):
         email_confirm_token = kwargs.get("token")
-        token = get_object_or_404(Token, token=email_confirm_token)
+        token = get_object_or_404(
+            Token,
+            token=email_confirm_token,
+            type=Token.TYPE_EMAIL_CONFORMATION
+        )
 
         if token.is_expired():
             return HttpResponseBadRequest(b"Token is expired")

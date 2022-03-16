@@ -7,4 +7,6 @@
     <form method="post">
         {% include "partial/form.html" with button_text="Зарегистрироваться" %}
     </form>
+
+    <a href="{% url 'accounts:forgot-password' %}">Забыли пароль?</a>
 {% endblock %}

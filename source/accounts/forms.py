@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.core.mail import send_mail
+from django.conf import settings
 
-from accounts.models import Profile
+from accounts.models import Profile, Token
 
 User = get_user_model()
 
@@ -26,10 +28,9 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ("avatar", "birth_date")
 
 
-class PasswordChangeForm(forms.ModelForm):
+class ResetPasswordForm(forms.ModelForm):
     password = forms.CharField(label="Новый пароль", strip=False, widget=forms.PasswordInput)
     password_confirm = forms.CharField(label="Подтвердите пароль", widget=forms.PasswordInput, strip=False)
-    old_password = forms.CharField(label="Старый пароль", strip=False, widget=forms.PasswordInput)
 
     def clean_password_confirm(self):
         password = self.cleaned_data.get("password")
@@ -37,12 +38,6 @@ class PasswordChangeForm(forms.ModelForm):
         if password and password_confirm and password != password_confirm:
             raise forms.ValidationError('Пароли не совпадают!')
         return password_confirm
-
-    def clean_old_password(self):
-        old_password = self.cleaned_data.get('old_password')
-        if not self.instance.check_password(old_password):
-            raise forms.ValidationError('Старый пароль неправильный!')
-        return old_password
 
     def save(self, commit=True):
         user = self.instance
@@ -54,4 +49,43 @@ class PasswordChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['password', 'password_confirm', 'old_password']
+        fields = ('password', 'password_confirm')
+
+
+class PasswordChangeForm(ResetPasswordForm):
+    old_password = forms.CharField(label="Старый пароль", strip=False, widget=forms.PasswordInput)
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+        if not self.instance.check_password(old_password):
+            raise forms.ValidationError('Старый пароль неправильный!')
+        return old_password
+
+    class Meta:
+        model = User
+        fields = ('password', 'password_confirm', 'old_password')
+
+
+class ForgotPasswordForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = Token
+        fields = ("email",)
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email").lower()
+        try:
+            self._user = User.objects.get(
+                email=email
+            )
+        except User.DoesNotExist:
+            raise forms.ValidationError(
+                "User does not exists",
+                code="invalid"
+            )
+
+        return email
+
+    def save(self):
+        return Token.create_reset_password(self._user)
