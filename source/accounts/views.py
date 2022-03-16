@@ -10,7 +10,7 @@ from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.forms import MyUserCreationForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm
-from accounts.models import Profile, EmailConfirmationToken
+from accounts.models import Profile, Token
 
 
 User = get_user_model()
@@ -27,7 +27,7 @@ class RegisterView(CreateView):
         user.save()
         Profile.objects.create(user=user)
 
-        token = EmailConfirmationToken.objects.create(user=user)
+        token = Token.create_email_confirmation(user)
 
         confirm_email_url = self.request.build_absolute_uri(
             reverse("accounts:confirm-email", kwargs={"token": token.token})
@@ -163,7 +163,7 @@ class UserPasswordChangeView(LoginRequiredMixin, UpdateView):
 class EmailConfirmView(View):
     def get(self, request, *args, **kwargs):
         email_confirm_token = kwargs.get("token")
-        token = get_object_or_404(EmailConfirmationToken, token=email_confirm_token)
+        token = get_object_or_404(Token, token=email_confirm_token)
 
         if token.is_expired():
             return HttpResponseBadRequest(b"Token is expired")
