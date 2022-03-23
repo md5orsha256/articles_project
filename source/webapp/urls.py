@@ -5,7 +5,14 @@ from webapp.views import (
     ArticleCreateView,
     ArticleView,
     ArticleUpdateView,
-    ArticleDeleteView, IndexView, CommentCreateView, CommentUpdateView, CommentDeleteView)
+    ArticleDeleteView,
+    IndexView,
+    CommentCreateView,
+    CommentUpdateView,
+    CommentDeleteView,
+    ArticleLikeView,
+    ArticleUnlikeView,
+)
 
 app_name = 'webapp'
 
@@ -14,6 +21,8 @@ urlpatterns = [
     path('articles/', RedirectView.as_view(pattern_name="index")),
     path('articles/add/', ArticleCreateView.as_view(), name="article_add"),
     path('article/<int:pk>/', ArticleView.as_view(template_name="articles/view.html"), name="article_view"),
+    path('article/<int:pk>/like/', ArticleLikeView.as_view(), name="like_article"),
+    path('article/<int:pk>/unlike/', ArticleUnlikeView.as_view(), name="unlike_article"),
     path('article/<int:pk>/update/', ArticleUpdateView.as_view(), name="article_update_view"),
     path('article/<int:pk>/delete/', ArticleDeleteView.as_view(), name="article_delete_view"),
     path('article/<int:pk>/comments/add/', CommentCreateView.as_view(), name="article_comment_create"),
