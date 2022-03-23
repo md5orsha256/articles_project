@@ -45,3 +45,7 @@ body {
     text-align: center;
     border: solid 1px gray;
 }
+
+.invisible {
+    display: none
+}
