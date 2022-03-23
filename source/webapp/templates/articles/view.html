@@ -25,6 +25,13 @@
     <h1>{{ article.author }}</h1>
     <h3>{{ article.title }}</h3>
     <p>{{ article.content }}</p>
+    <h3>Теги</h3>
+    {% for tag in article.tags.all %}
+        {{ tag.name }}{% if not forloop.last %}, {% else %}. {% endif %}
+    {% endfor %}
+
+    {% include "partial/like_article.html" %}
+
     <br>
     <h3>Комментарии</h3>
     {% for comment in comments %}
@@ -40,9 +47,5 @@
             <p><a href="{% url "webapp:comment_delete_view" comment.pk %}">Удалить</a></p>
         {% endif %}
 
-    {% endfor %}
-    <h3>Теги</h3>
-    {% for tag in article.tags.all %}
-        {{ tag.name }}{% if not forloop.last %}, {% else %}. {% endif %}
     {% endfor %}
 {% endblock %}

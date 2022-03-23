@@ -8,6 +8,8 @@
 
     <h3>{{ article.upper }}</h3>
 
+    {% include "partial/like_article.html" %}
+
     <p><a href="{{ article.get_absolute_url }}">Подробнее...</a></p>
 
     {% if perms.webapp.change_article or user == article.author %}

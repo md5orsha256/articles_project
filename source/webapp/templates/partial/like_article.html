@@ -1,0 +1,19 @@
+{% load static %}
+
+<div>
+    {% if user.is_authenticated %}
+        <p class="like-counter" id="like-counter-{{ article.pk }}">Лайкнуло: {{ article.likes.count }}</p>
+        {% if user in article.likes.all %}
+            <a class="like-link" data-article-id="{{ article.pk }}" href="{% url "webapp:unlike_article" article.pk %}">Анлайк</a>
+            <a class="like-link invisible" data-article-id="{{ article.pk }}" href="{% url "webapp:like_article" article.pk %}">Лайк</a>
+        {% else %}
+            <a class="like-link invisible" data-article-id="{{ article.pk }}" href="{% url "webapp:unlike_article" article.pk %}">Анлайк</a>
+            <a class="like-link" data-article-id="{{ article.pk }}" href="{% url "webapp:like_article" article.pk %}">Лайк</a>
+        {% endif %}
+    {% endif %}
+</div>
+
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static "js/likes.js" %}"></script>
+{% endblock scripts %}
