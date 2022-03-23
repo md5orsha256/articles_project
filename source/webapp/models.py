@@ -30,6 +30,11 @@ class Article(BaseModel):
         verbose_name="Автор",
     )
 
+    likes = models.ManyToManyField(
+        User,
+        related_name="liked_articles"
+    )
+
     def get_absolute_url(self):
         return reverse('webapp:article_view', kwargs={'pk': self.pk})
 
@@ -66,10 +71,18 @@ class Comment(BaseModel):
         on_delete=models.CASCADE,
         verbose_name="Автор"
     )
-    article = models.ForeignKey("webapp.Article", on_delete=models.CASCADE,
-                                related_name="comments",
-                                verbose_name="Статья",
-                                )
+
+    article = models.ForeignKey(
+        "webapp.Article",
+        on_delete=models.CASCADE,
+        related_name="comments",
+        verbose_name="Статья",
+    )
+
+    likes = models.ManyToManyField(
+        User,
+        related_name="liked_comments"
+    )
 
     class Meta:
         db_table = 'comments'
