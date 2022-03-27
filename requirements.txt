@@ -4,3 +4,4 @@ sqlparse==0.4.2
 tzdata==2021.5
 Pillow==9.0.1
 django-environ==0.8.1
+djangorestframework==3.13.1
