@@ -44,12 +44,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 
     # Custom apps
     'webapp',
     'accounts',
 
     "api_v1",
+    "api_v2"
 
     # Lib apps
 ]
