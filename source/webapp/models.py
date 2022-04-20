@@ -1,4 +1,5 @@
-from django.core.validators import MinLengthValidator
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator, MaxValueValidator, MinValueValidator, MaxLengthValidator
 from django.db import models
 
 from django.contrib.auth import get_user_model
@@ -35,6 +36,18 @@ class Article(BaseModel):
         related_name="liked_articles"
     )
 
+    def create_comment(self, author: "User", content: str) -> "Comment":
+
+        comment = Comment(
+            author=author,
+            content=content,
+            article=self
+        )
+        comment.full_clean()
+        comment.save()
+        Comment.objects.create
+        return comment
+
     def get_absolute_url(self):
         return reverse('webapp:article_view', kwargs={'pk': self.pk})
 
@@ -48,6 +61,9 @@ class Article(BaseModel):
         db_table = 'articles'
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
+
+    def get_avg_rating(self):
+        return self.reviews.filter(is_moderated=True).aggregate(avg=models.Avg("rate")).get("avg") or 0
 
 
 class Tag(BaseModel):
@@ -63,7 +79,12 @@ class Tag(BaseModel):
 
 
 class Comment(BaseModel):
-    content = models.TextField(max_length=2000, verbose_name="Контент")
+    content = models.TextField(
+        max_length=2000,
+        verbose_name="Контент",
+        validators=[MaxLengthValidator(2000)]
+    )
+
     author = models.ForeignKey(
         User,
         related_name="comments",
@@ -88,3 +109,34 @@ class Comment(BaseModel):
         db_table = 'comments'
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
+
+
+class Review(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        related_name="reviews",
+    )
+
+    article = models.ForeignKey(
+        "webapp.Article",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="reviews",
+    )
+
+    rate = models.PositiveSmallIntegerField(
+        validators=[MaxValueValidator(5), MinValueValidator(1)],
+        null=False,
+        blank=False,
+    )
+
+    is_moderated = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "reviews"
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"

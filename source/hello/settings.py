@@ -45,13 +45,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
 
     # Custom apps
     'webapp',
     'accounts',
 
     "api_v1",
-    "api_v2"
+    "api_v2",
+    "api_v3",
 
     # Lib apps
 ]
@@ -154,6 +156,13 @@ EMAIL_USE_TLS = env.str("EMAIL_USE_TLS", True)
 EMAIL_USE_SSL = env.str("EMAIL_USE_SSL", True)
 DEFAULT_FROM_EMAIL = env.str("EMAIL_DEFAULT_FROM", "webmaster@localhost")
 # End Email Config
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 
 try:

@@ -1,6 +1,8 @@
+import json
+
 from rest_framework import serializers
 
-from webapp.models import Article
+from webapp.models import Article, Tag
 
 
 class ArticleSimpleSerializer(serializers.Serializer):
@@ -37,11 +39,40 @@ class ArticleSimpleSerializer(serializers.Serializer):
         return instance
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ("name", "id")
+
+
+class MySuperSerializer(serializers.Serializer):
+    a = serializers.IntegerField(required=True)
+    b = serializers.CharField(max_length=120)
+
+
 class ArticleSerializer(serializers.ModelSerializer):
     """
     Модельный сериалайзер для модели `Articles`.
     """
+
+    tags = TagSerializer(many=True, read_only=True)
+    tag_ids = serializers.PrimaryKeyRelatedField(
+        source="tags",
+        many=True,
+        queryset=Tag.objects.all(),
+        write_only=True
+    )
+
+    super_data = MySuperSerializer(many=True, write_only=True)
+
     class Meta:
         model = Article
-        fields = ("id", "title", "content", "author_id")
+        fields = ("id", "title", "content", "author_id", "tags", "tag_ids", "super_data")
         read_only_fields = ("id", "author_id")
+
+    def save(self, **kwargs):
+        print(self.validated_data)
+        with open("my_awesome_file.json", "w") as f:
+            json.dump(self.validated_data.pop("super_data"), f)
+
+        return super(ArticleSerializer, self).save()
