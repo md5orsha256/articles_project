@@ -4,6 +4,9 @@ on:
   push:
     branches: [ master ]
 
+env:
+  DATABASE_URL: "sqlite:////home/runner/work/articles_project/articles_project/source/db.sqlite3"
+
 jobs:
   build:
 
